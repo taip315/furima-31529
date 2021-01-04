@@ -60,7 +60,7 @@
 | municipality  | string     | null: false              |
 | address       | string     | null: false              |
 | building      | string     |                          |
-| phone_number  | integer    | null: false              |
+| phone_number  | string     | null: false              |
 | purchase      | references | null: false, foreign_key | 
 
 
