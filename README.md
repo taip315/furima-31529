@@ -6,7 +6,7 @@
 | ------------------ | ------ | ----------- |
 | nickname           | string | null: false |
 | email              | string | null: false |
-| password           | string | null: false |
+| encrypted_password | string | null: false |
 | first_name         | string | null: false |
 | last_name          | string | null: false |
 | first_furigana     | string | null: false |
@@ -20,17 +20,17 @@
 
 ## items テーブル
 
-| Column       | Type        | Options     |
-| ------------ | ----------- | ----------- |
-| name         | string      | null: false |
-| explanation  | text        | null: false |
-| category     | string      | null: false |
-| state        | string      | null: false |
-| delivery_fee | string      | null: false |
-| region       | string      | null: false |
-| days         | string      | null: false |
-| price        | integer     | null: false |
-| user         | references  | null: false, foreign_key: true |
+| Column              | Type        | Options     |
+| ------------------- | ----------- | ----------- |
+| name                | string      | null: false | 
+| explanation         | text        | null: false |
+| category_id         | integer     | null: false |
+| state_id            | integer     | null: false |
+| delivery_fee_id     | integer     | null: false |
+| prefecture_id       | integer     | null: false |
+| days_id             | integer     | null: false |
+| price               | integer     | null: false |
+| user                | references  | null: false, foreign_key: true |
 
 
 ### Association
@@ -42,9 +42,6 @@
 
 | Column            | Type       | Options                  |
 | ----------------- | ---------- | ------------------------ |
-| card_number       | string     | null: false              |
-| expiration_date   | string     | null: false              |
-| security_code     | integer    | null: false              |
 | user              | references | null: false, foreign_key |
 | item              | references | null: false, foreign_key |
 
@@ -59,7 +56,7 @@
 | Column        | Type       | Options                  |
 | ------------- | ---------- | -----------------------  |
 | postal_number | string     | null: false              |
-| prefecture    | string     | null: false              |
+| prefecture_id | integer    | null: false              |
 | municipality  | string     | null: false              |
 | address       | string     | null: false              |
 | building      | string     |                          |
