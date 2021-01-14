@@ -29,27 +29,52 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Explanation can't be blank")
       end
       it "categoryが空では登録できない" do
-        @item.category_id = "1"
+        @item.category_id = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Category can't be blank")
+      end
+      it "stateが空では登録できない" do
+        @item.state_id = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("State can't be blank")
+      end
+      it "delivery_feeが空では登録できない" do
+        @item.delivery_fee_id = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Delivery fee can't be blank")
+      end
+      it "prefectureが空では登録できない" do
+        @item.prefecture_id = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Prefecture can't be blank")
+      end
+      it "dayが空では登録できない" do
+        @item.day_id = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Day can't be blank")
+      end
+      it "categoryが1では登録できない" do
+        @item.category_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Category must be other than 1")
       end
-      it "stateが空では登録できない" do
-        @item.state_id = "1"
+      it "stateが1では登録できない" do
+        @item.state_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("State must be other than 1")
       end
-      it "delivery_feeが空では登録できない" do
-        @item.delivery_fee_id = "1"
+      it "delivery_feeが1では登録できない" do
+        @item.delivery_fee_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Delivery fee must be other than 1")
       end
-      it "prefectureが空では登録できない" do
-        @item.prefecture_id = "1"
+      it "prefectureが1では登録できない" do
+        @item.prefecture_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Prefecture must be other than 1")
       end
-      it "dayが空では登録できない" do
-        @item.day_id = "1"
+      it "dayが1では登録できない" do
+        @item.day_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Day must be other than 1")
       end
@@ -59,19 +84,29 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Price can't be blank")
       end
       it "販売価格が半角でないときは登録できない" do
-        @item.price = "３３３３"
+        @item.price = "３３３３".to_i
         @item.valid?
-        expect(@item.errors.full_messages).to include("Price is not a number")
+        expect(@item.errors.full_messages).to include("Price must be greater than 300")
       end
       it "販売価格が¥299以下のときは登録できない" do
-        @item.price = "50"
+        @item.price = 50
         @item.valid?
         expect(@item.errors.full_messages).to include("Price must be greater than 300")
       end
       it "販売価格が¥10000000以上のときは登録できない" do
-        @item.price = "10000000"
+        @item.price = 10000000
         @item.valid?
         expect(@item.errors.full_messages).to include("Price must be less than 9999999")
+      end
+      it "priceは半角英数混合では登録できない" do
+        @item.price = "abc123".to_i
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price must be greater than 300")
+      end
+      it "priceは半角英語だけでは登録できない" do
+        @item.price = "abcabc".to_i
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price must be greater than 300")
       end
     end
   end   
