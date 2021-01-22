@@ -1,14 +1,13 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!, only:[:index,:create]
-
+  before_action :authenticate_user!
+  before_action :get_item_and_orderform
+  before_action :correct_access
+  
   def index
-    @item = Item.find(params[:item_id])
-    @order_form = OrderForm.new
   end
 
   def create
-    @order_form = OrderForm.new(order_params)
-    @item = Item.find(params[:item_id])
+    
     if @order_form.valid?
       pay_item(@item)
       @order_form.save(current_user.id, @item.id)
@@ -32,4 +31,17 @@ private
       currency: 'jpy'
     )
   end
+
+  def get_item_and_orderform
+    @item = Item.find(params[:item_id])
+    @order_form = OrderForm.new
+  end
+
+  def correct_access
+    if (current_user.id == @item.user.id) || Order.exists?(item_id: @item.id)
+      redirect_to root_path
+    end
+  end
+
+
 end
