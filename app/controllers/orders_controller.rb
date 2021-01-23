@@ -1,13 +1,14 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
-  before_action :get_item_and_orderform
+  before_action :get_item
   before_action :correct_access
   
   def index
+    @order_form = OrderForm.new
   end
 
   def create
-    
+    @order_form = OrderForm.new(order_params)
     if @order_form.valid?
       pay_item(@item)
       @order_form.save(current_user.id, @item.id)
@@ -32,9 +33,8 @@ private
     )
   end
 
-  def get_item_and_orderform
+  def get_item
     @item = Item.find(params[:item_id])
-    @order_form = OrderForm.new
   end
 
   def correct_access
