@@ -1,4 +1,5 @@
 class OrdersController < ApplicationController
+  before_action :basic_auth
   before_action :authenticate_user!
   before_action :get_item
   before_action :correct_access
@@ -43,5 +44,10 @@ private
     end
   end
 
+  def basic_auth
+    authenticate_or_request_with_http_basic do |username, password|
+      username == ENV["BASIC_AUTH_USER"] && password == ENV["BASIC_AUTH_PASSWORD"]
+    end
+  end
 
 end

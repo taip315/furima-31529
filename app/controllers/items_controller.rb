@@ -1,4 +1,5 @@
 class ItemsController < ApplicationController
+  before_action :basic_auth
   before_action :authenticate_user! , except: [:index, :show]
   before_action :get_item, only: [:show,:edit,:update,:destroy]
   before_action :ensure_correct_user, only:[:edit, :update, :destroy]
@@ -54,7 +55,12 @@ class ItemsController < ApplicationController
   def ensure_correct_user
     if current_user.id != @item.user.id
       redirect_to root_path
-
+    end
+  end
+   
+  def basic_auth
+    authenticate_or_request_with_http_basic do |username, password|
+      username == ENV["BASIC_AUTH_USER"] && password == ENV["BASIC_AUTH_PASSWORD"]
     end
   end
 end
